@@ -3,8 +3,6 @@
 A locally-hosted AI orchestration runtime built on constrained hardware.  
 Specialized agents run in sequence, pass structured context through a shared handoff layer, and are governed by a full protocol directory before a single line of application code was written.
 
-> *"I prefer a useful and honest tool than a fake and existing friend."*
-
 ---
 
 ## Why This Exists

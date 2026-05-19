@@ -1,0 +1,15 @@
+{
+  "agents": {
+    "manager": "brain/orchestrator",
+    "coder": "implementation",
+    "tester": "testing/debugging",
+    "reviewer": "quality review",
+    "organizer": "memory/docs/logs",
+    "scraper": "research/web data"
+  },
+  "rules": {
+    "append_only": true,
+    "no_delete": true,
+    "critical_rate_limit_percent": 95
+  }
+}

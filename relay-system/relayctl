@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+set -e
+
+RELAY="$HOME/saas-project/relay-system/relay"
+BASE="$HOME/saas-project/relay-system"
+
+command="$1"
+
+case "$command" in
+  status)
+    "$RELAY" --status
+    ;;
+
+  active)
+    echo "Latest state:"
+    tail -n 1 "$BASE/state/state.jsonl" | python3 -m json.tool
+    ;;
+
+  latest-handoff)
+    cat "$BASE/handoffs/latest-handoff.md"
+    ;;
+
+  run-tests)
+    bash "$BASE/tests/run_all_scenarios.sh"
+    ;;
+
+  emergency)
+    agent="$2"
+    task_id="$3"
+
+    if [ -z "$agent" ] || [ -z "$task_id" ]; then
+      echo "Usage: relayctl emergency <agent> <task_id>"
+      exit 1
+    fi
+
+    "$RELAY" --simulate-rate \
+      --agent "$agent" \
+      --task-id "$task_id" \
+      --percent 95
+    ;;
+
+  help|"")
+    echo "relayctl commands:"
+    echo ""
+    echo "  relayctl status"
+    echo "      Show full relay system status."
+    echo ""
+    echo "  relayctl active"
+    echo "      Show latest active agent/task state."
+    echo ""
+    echo "  relayctl latest-handoff"
+    echo "      Print latest handoff file."
+    echo ""
+    echo "  relayctl run-tests"
+    echo "      Run all relay scenario tests."
+    echo ""
+    echo "  relayctl emergency <agent> <task_id>"
+    echo "      Simulate a 95% rate limit emergency for an agent/task."
+    echo ""
+    ;;
+
+  *)
+    echo "Unknown command: $command"
+    echo "Run: relayctl help"
+    exit 1
+    ;;
+esac

@@ -1,0 +1,64 @@
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ─── Virtual Environments ─────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ─── External / FYP ───────────────────────────────────────────────────────────
+# FYP_2 contains a full Python .venv (1.1 GB) — do not commit
+external/FYP_2/
+
+# churn-fastapi-base is a reference project — it has its own git history
+# Include it as a reference but exclude its .venv if it grows one
+external/churn-fastapi-base/.venv/
+
+# ─── Secrets & Environment ────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.secret
+*_secret*
+*credentials*
+*.pem
+*.key
+
+# ─── Logs (keep structure, ignore content by default) ─────────────────────────
+# Relay logs are append-only and contain execution history.
+# Uncomment to exclude them from git if they grow large:
+# relay-system/logs/
+# relay-system/state/
+# logs/
+
+# ─── Node ─────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── OS ───────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── IDE ──────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ─── Ollama model files (large binaries) ──────────────────────────────────────
+# Modelfiles (text definitions) ARE committed — they're the agent blueprints.
+# The actual model weights live in ~/.ollama and are NOT part of this repo.
+*.gguf
+*.bin

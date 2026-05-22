@@ -5,6 +5,8 @@ from typing import Dict
 ALLOWED_PREFIXES = [
     "python -c",
     "python - <<'PY'",
+    "grep ",
+    "cat ",
 ]
 
 

@@ -1,5 +1,5 @@
 # Task
-Add execution duration timing logs to execution_controller.py using the existing logger system.
+Add a short comment above the ExecutionController class explaining its purpose.
 
 # Constraints
 - Use repository context only

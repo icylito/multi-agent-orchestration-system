@@ -222,3 +222,27 @@ def validate_queue_data(queue_data):
                 return False, f"Invalid dependency {dep} for {task['id']}"
 
     return True, "Queue data is valid"
+
+
+def format_queue_table():
+    tasks = list_tasks()
+
+    if not tasks:
+        return "Queue is empty."
+
+    lines = []
+    lines.append("ID | Status | Priority | Mode | Dependencies | Title")
+    lines.append("---|--------|----------|------|--------------|------")
+
+    for task in tasks:
+        deps = ",".join(task.get("dependencies", [])) or "-"
+        lines.append(
+            f"{task.get('id')} | "
+            f"{task.get('status')} | "
+            f"{task.get('priority', 'normal')} | "
+            f"{task.get('execution_mode', 'direct')} | "
+            f"{deps} | "
+            f"{task.get('title')}"
+        )
+
+    return "\n".join(lines)

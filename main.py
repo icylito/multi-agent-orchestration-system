@@ -14,6 +14,7 @@ from app.core.task_queue import (
     queue_status,
     export_queue,
     import_queue,
+    format_queue_table,
     validate_queue_data,
 )
 
@@ -65,6 +66,7 @@ def main():
     parser.add_argument("--execution-mode", type=str, default="direct", help="Task execution mode")
     parser.add_argument("--constraint", action="append", default=[], help="Task constraint; can be used multiple times")
     parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
+    parser.add_argument("--queue-table", action="store_true", help="Show queue as table")
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
@@ -145,6 +147,10 @@ def main():
     if args.queue_list:
         for task in list_tasks():
             print(task)
+        return
+
+    if args.queue_table:
+        print(format_queue_table())
         return
 
     if args.queue_next:

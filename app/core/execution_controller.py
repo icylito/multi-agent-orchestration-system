@@ -1,0 +1,29 @@
+from app.core.logger import log_event
+from app.core.config import get_config_value
+
+
+class ExecutionController:
+    def __init__(self):
+        self.status = "idle"
+        self.retry_limit = get_config_value("execution.retry_limit", 0)
+
+    def execute(self, task_name: str, handler):
+        self.status = "running"
+        log_event("ExecutionController", "execute_start", "RUNNING", task_name)
+
+        retry_count = 0
+        while True:
+            try:
+                result = handler()
+                self.status = "success"
+                log_event("ExecutionController", "execute_success", "SUCCESS", task_name)
+                return result
+            except Exception as error:
+                retry_count += 1
+                if retry_count <= self.retry_limit:
+                    log_event("ExecutionController", "execute_retry", "RETRY", f"Attempt {retry_count}: {str(error)}")
+                    continue
+                else:
+                    self.status = "failed"
+                    log_event("ExecutionController", "execute_failed", "FAILED", str(error))
+                    raise

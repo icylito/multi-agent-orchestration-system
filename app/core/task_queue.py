@@ -159,16 +159,12 @@ def export_queue():
 
 
 def import_queue(queue_data):
-    if not isinstance(queue_data, dict):
-        return {
-            "status": "ERROR",
-            "message": "Queue data must be a dictionary"
-        }
+    is_valid, message = validate_queue_data(queue_data)
 
-    if "tasks" not in queue_data or not isinstance(queue_data["tasks"], list):
+    if not is_valid:
         return {
             "status": "ERROR",
-            "message": "Queue data must contain a tasks list"
+            "message": message
         }
 
     save_queue(queue_data)
@@ -177,3 +173,40 @@ def import_queue(queue_data):
         "status": "SUCCESS",
         "message": f"Imported {len(queue_data['tasks'])} tasks"
     }
+
+
+def validate_queue_data(queue_data):
+    if not isinstance(queue_data, dict):
+        return False, "Queue data must be a dictionary"
+
+    tasks = queue_data.get("tasks")
+
+    if not isinstance(tasks, list):
+        return False, "Queue data must contain a tasks list"
+
+    seen_ids = set()
+
+    for task in tasks:
+        if not isinstance(task, dict):
+            return False, "Each task must be a dictionary"
+
+        required = ["id", "title", "status", "dependencies", "result", "error"]
+
+        for key in required:
+            if key not in task:
+                return False, f"Task missing required key: {key}"
+
+        if task["id"] in seen_ids:
+            return False, f"Duplicate task id: {task['id']}"
+
+        seen_ids.add(task["id"])
+
+        if not isinstance(task["dependencies"], list):
+            return False, f"Dependencies must be list for {task['id']}"
+
+    for task in tasks:
+        for dep in task["dependencies"]:
+            if dep not in seen_ids:
+                return False, f"Invalid dependency {dep} for {task['id']}"
+
+    return True, "Queue data is valid"

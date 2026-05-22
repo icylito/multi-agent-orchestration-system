@@ -2,7 +2,7 @@
   "tasks": [
     {
       "id": "task-1",
-      "title": "Create queue dependency validation function",
+      "title": "Create basic task queue data structure with status fields",
       "status": "pending",
       "dependencies": [],
       "result": null,
@@ -10,19 +10,40 @@
     },
     {
       "id": "task-2",
-      "title": "Implement queue status reporting mechanism",
+      "title": "Implement queue push functionality with dependency tracking",
       "status": "pending",
-      "dependencies": [],
+      "dependencies": [
+        "task-1"
+      ],
       "result": null,
       "error": null
     },
     {
       "id": "task-3",
-      "title": "Integrate validation and reporting into queue system",
+      "title": "Add dependency validation logic for queued tasks",
       "status": "pending",
       "dependencies": [
-        "task-1",
         "task-2"
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "id": "task-4",
+      "title": "Implement status reporting for queued tasks",
+      "status": "pending",
+      "dependencies": [
+        "task-3"
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "id": "task-5",
+      "title": "Create queue processing loop with status updates",
+      "status": "pending",
+      "dependencies": [
+        "task-4"
       ],
       "result": null,
       "error": null

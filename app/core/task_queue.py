@@ -272,3 +272,12 @@ def retry_task(task_id: str):
         "status": "ERROR",
         "message": f"Task not found: {task_id}"
     }
+
+
+def skip_task(task_id: str, reason=None):
+    return update_task_status(
+        task_id,
+        "skipped",
+        result=None,
+        error=reason
+    )

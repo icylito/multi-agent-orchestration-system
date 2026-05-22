@@ -21,6 +21,8 @@ def format_task_result(result, action=None):
             return f"Marked {task_id} as failed."
         if action == "retry":
             return f"Reset {task_id} to pending."
+        if action == "skip":
+            return f"Marked {task_id} as skipped."
 
         return f"{task_id}: {title} [{status}]"
 

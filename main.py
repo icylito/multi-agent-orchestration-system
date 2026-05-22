@@ -17,6 +17,7 @@ from app.core.task_queue import (
     import_queue,
     format_queue_table,
     retry_task,
+    skip_task,
     validate_queue_data,
 )
 
@@ -73,6 +74,7 @@ def main():
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
     parser.add_argument("--queue-retry", type=str, help="Reset failed task to pending")
+    parser.add_argument("--queue-skip", type=str, help="Mark task as skipped")
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
     parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
     parser.add_argument("--max-tasks", type=int, default=5, help="Maximum queued tasks to run in one run-all session")
@@ -170,6 +172,10 @@ def main():
 
     if args.queue_retry:
         print(format_task_result(retry_task(args.queue_retry), action='retry'))
+        return
+
+    if args.queue_skip:
+        print(format_task_result(skip_task(args.queue_skip), action='skip'))
         return
 
 

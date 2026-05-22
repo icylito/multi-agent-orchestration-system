@@ -5,8 +5,8 @@
       "title": "Smoke parent task",
       "status": "pending",
       "dependencies": [],
-      "created_at": "2026-05-22T18:49:45.239448",
-      "updated_at": "2026-05-22T18:49:45.239461",
+      "created_at": "2026-05-22T18:50:08.753917",
+      "updated_at": "2026-05-22T18:50:08.753932",
       "result": null,
       "error": null
     },
@@ -17,8 +17,8 @@
       "dependencies": [
         "task-1"
       ],
-      "created_at": "2026-05-22T18:49:45.312799",
-      "updated_at": "2026-05-22T18:49:45.312818",
+      "created_at": "2026-05-22T18:50:08.817869",
+      "updated_at": "2026-05-22T18:50:08.817882",
       "result": null,
       "error": null
     }

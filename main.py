@@ -159,6 +159,15 @@ def main():
 
 
     if args.queue_run_all:
+        is_valid, message = validate_queue_data(export_queue())
+
+        if not is_valid:
+            print({
+                "status": "ERROR",
+                "message": f"Queue validation failed: {message}"
+            })
+            return
+
         tasks_run = 0
 
         while True:

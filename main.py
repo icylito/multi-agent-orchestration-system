@@ -4,6 +4,7 @@ from app.agents.reviewer import review_output
 from app.agents.tester import run_tester
 from app.core.handoff_file import read_handoff
 from app.core.execute_patch import execute_patch
+from app.core.test_executor import execute_test_plan
 
 
 def main():
@@ -37,6 +38,12 @@ def main():
         print("\n[Tester] Creating validation test...\n")
         test_plan = run_tester(user_task, review, coder_packet.relevant_files)
         print(test_plan)
+
+        run_choice = input("\nRun tester command? (y/n): ").strip().lower()
+        if run_choice == "y":
+            print("\n[TestExecutor] Running test...\n")
+            test_result = execute_test_plan(test_plan)
+            print(test_result)
     else:
         print("\n[Tester] Skipped because reviewer did not PASS.")
 

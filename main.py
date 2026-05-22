@@ -3,6 +3,7 @@ import argparse
 from app.core.pipeline import run_pipeline
 from app.core.status_reporter import print_status
 from app.agents.planner import create_plan
+from app.agents.plan_queue import create_plan_queue
 from app.core.task_queue import (
     add_task,
     list_tasks,
@@ -55,6 +56,7 @@ def main():
 
     parser.add_argument("--status", action="store_true", help="Show latest run status")
     parser.add_argument("--plan", type=str, help="Create a non-executing plan")
+    parser.add_argument("--plan-queue", type=str, help="Create a queue JSON from a larger goal")
 
     parser.add_argument("--queue-add", type=str, help="Add task to queue")
     parser.add_argument("--depends-on", type=str, help="Comma-separated dependency task IDs")
@@ -79,6 +81,12 @@ def main():
 
     if args.plan:
         print(create_plan(args.plan))
+        return
+
+    if args.plan_queue:
+        import json
+        queue = create_plan_queue(args.plan_queue)
+        print(json.dumps(queue, indent=2))
         return
 
     if args.queue_clear:

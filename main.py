@@ -2,6 +2,7 @@ import argparse
 
 from app.core.pipeline import run_pipeline
 from app.core.status_reporter import print_status
+from app.core.cli_format import format_task_result
 from app.agents.planner import create_plan
 from app.agents.plan_queue import create_plan_queue
 from app.core.task_queue import (
@@ -15,6 +16,7 @@ from app.core.task_queue import (
     export_queue,
     import_queue,
     format_queue_table,
+    retry_task,
     validate_queue_data,
 )
 
@@ -70,6 +72,7 @@ def main():
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
+    parser.add_argument("--queue-retry", type=str, help="Reset failed task to pending")
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
     parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
     parser.add_argument("--max-tasks", type=int, default=5, help="Maximum queued tasks to run in one run-all session")
@@ -101,7 +104,7 @@ def main():
             print("Refusing to clear queue without --yes.")
             return
 
-        print(clear_queue())
+        print(format_task_result(clear_queue()))
         return
 
     if args.queue_status:
@@ -141,12 +144,12 @@ def main():
             dependencies = [dep.strip() for dep in args.depends_on.split(",") if dep.strip()]
 
         task = add_task(args.queue_add, dependencies=dependencies)
-        print(task)
+        print(format_task_result(task, action='add'))
         return
 
     if args.queue_list:
         for task in list_tasks():
-            print(task)
+            print(format_task_result(task, action='add'))
         return
 
     if args.queue_table:
@@ -158,11 +161,15 @@ def main():
         return
 
     if args.queue_complete:
-        print(mark_completed(args.queue_complete))
+        print(format_task_result(mark_completed(args.queue_complete), action='complete'))
         return
 
     if args.queue_fail:
-        print(mark_failed(args.queue_fail))
+        print(format_task_result(mark_failed(args.queue_fail), action='fail'))
+        return
+
+    if args.queue_retry:
+        print(format_task_result(retry_task(args.queue_retry), action='retry'))
         return
 
 

@@ -246,3 +246,29 @@ def format_queue_table():
         )
 
     return "\n".join(lines)
+
+
+def retry_task(task_id: str):
+    queue = load_queue()
+
+    for task in queue["tasks"]:
+        if task["id"] == task_id:
+            if task["status"] != "failed":
+                return {
+                    "status": "ERROR",
+                    "message": f"Task {task_id} is not failed"
+                }
+
+            task["status"] = "pending"
+            task["updated_at"] = _now()
+            task["error"] = None
+            task["result"] = None
+
+            save_queue(queue)
+
+            return task
+
+    return {
+        "status": "ERROR",
+        "message": f"Task not found: {task_id}"
+    }

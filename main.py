@@ -10,6 +10,7 @@ from app.core.task_queue import (
     mark_completed,
     mark_failed,
     clear_queue,
+    queue_status,
 )
 
 
@@ -62,6 +63,7 @@ def main():
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
     parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
     parser.add_argument("--queue-clear", action="store_true", help="Clear all queued tasks")
+    parser.add_argument("--queue-status", action="store_true", help="Show queue status summary")
 
     args = parser.parse_args()
 
@@ -75,6 +77,10 @@ def main():
 
     if args.queue_clear:
         print(clear_queue())
+        return
+
+    if args.queue_status:
+        print(queue_status())
         return
 
     if args.queue_add:

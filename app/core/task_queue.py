@@ -128,3 +128,27 @@ def clear_queue():
     queue = _empty_queue()
     save_queue(queue)
     return queue
+
+
+def queue_status():
+    queue = load_queue()
+    tasks = queue["tasks"]
+
+    counts = {
+        "pending": 0,
+        "completed": 0,
+        "failed": 0,
+        "running": 0,
+    }
+
+    for task in tasks:
+        status = task.get("status", "pending")
+        counts[status] = counts.get(status, 0) + 1
+
+    next_task = get_next_ready_task()
+
+    return {
+        "total": len(tasks),
+        "counts": counts,
+        "next_ready": next_task,
+    }

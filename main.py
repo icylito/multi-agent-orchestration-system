@@ -11,6 +11,7 @@ from app.core.task_queue import (
     mark_failed,
     clear_queue,
     queue_status,
+    export_queue,
 )
 
 
@@ -66,6 +67,7 @@ def main():
     parser.add_argument("--queue-clear", action="store_true", help="Clear all queued tasks")
     parser.add_argument("--yes", action="store_true", help="Confirm destructive actions")
     parser.add_argument("--queue-status", action="store_true", help="Show queue status summary")
+    parser.add_argument("--queue-export", action="store_true", help="Print full queue JSON")
 
     args = parser.parse_args()
 
@@ -87,6 +89,11 @@ def main():
 
     if args.queue_status:
         print(queue_status())
+        return
+
+    if args.queue_export:
+        import json
+        print(json.dumps(export_queue(), indent=2))
         return
 
     if args.queue_add:

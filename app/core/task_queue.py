@@ -152,3 +152,7 @@ def queue_status():
         "counts": counts,
         "next_ready": next_task,
     }
+
+
+def export_queue():
+    return load_queue()

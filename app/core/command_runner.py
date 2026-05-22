@@ -7,6 +7,11 @@ ALLOWED_PREFIXES = [
     "python - <<'PY'",
     "grep ",
     "cat ",
+    "head ",
+    "tail ",
+    "ls ",
+    "find ",
+    "sed -n",
 ]
 
 

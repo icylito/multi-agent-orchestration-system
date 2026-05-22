@@ -149,7 +149,7 @@ def main():
         save_state(state)
         print(test_result)
 
-        if test_result.get("status") != "SUCCESS":
+        if test_result.get("status") == "FAILED":
             rollback_choice = input("\nTest failed. Rollback applied patch? (y/n): ").strip().lower()
             if rollback_choice == "y":
                 rollback_results = rollback_many(state["patched_files"])

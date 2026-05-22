@@ -5,6 +5,8 @@ from app.agents.reviewer import review_output
 from app.agents.tester import run_tester
 from app.core.handoff_file import read_handoff
 from app.core.execute_patch import execute_patch, get_successfully_patched_files
+from app.core.patch_parser import extract_file_blocks
+from app.core.diff_preview import create_diff_bundle
 from app.core.test_executor import execute_test_plan
 from app.core.rollback import rollback_many
 from app.core.state_manager import save_state
@@ -90,6 +92,14 @@ def main():
         state["status"] = "REVIEW_NOT_PASS"
         save_state(state)
         return
+
+    patches = extract_file_blocks(coder_packet.proposed_changes)
+
+    print("\n[DiffPreview] Proposed changes:\n")
+    if patches:
+        print(create_diff_bundle(patches))
+    else:
+        print("No patchable FILE blocks found.")
 
     apply_choice = input("\nReviewer passed. Apply proposed patch? (y/n): ").strip().lower()
 

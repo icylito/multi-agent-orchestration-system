@@ -22,6 +22,8 @@ Rules:
 - Do not assume Node.js, Java, pytest, or any framework unless shown in context.
 - If no executable test is possible, say BLOCKED.
 - Provide a Python command only if the repo is Python.
+- Do not use markdown code fences.
+- Minimal Test Command must be one single-line command.
 
 Task:
 {task}
@@ -35,7 +37,7 @@ Repository Context:
 Respond with:
 1. Status: READY or BLOCKED
 2. Test Goal
-3. Minimal Test Command
+3. Minimal Test Command: provide ONE executable shell command on a single line, no markdown fences
 4. Expected Result
 """
 

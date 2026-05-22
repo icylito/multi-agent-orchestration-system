@@ -59,3 +59,17 @@
 {"timestamp": "2026-05-22T17:45:56.651030", "agent": "Coder", "action": "run_coder", "status": "READY", "details": "['app/core/execution_controller.py', 'app/core/config.py', 'app/core/logger.py', 'relay-system/config/settings.json', 'relay-system/handoffs/active_handoff.md']"}
 {"timestamp": "2026-05-22T17:45:58.001802", "agent": "Reviewer", "action": "review_output", "status": "SUCCESS", "details": ""}
 {"timestamp": "2026-05-22T17:46:01.204370", "agent": "Tester", "action": "run_tester", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:51:29.537774", "agent": "Manager", "action": "create_handoff", "status": "SUCCESS", "details": "Add execution duration timing logs to execution_controller.py using the existing logger system."}
+{"timestamp": "2026-05-22T17:51:33.141756", "agent": "Coder", "action": "run_coder", "status": "READY", "details": "['app/core/execution_controller.py', 'app/core/config.py', 'app/core/logger.py', 'relay-system/config/settings.json', 'relay-system/handoffs/active_handoff.md']"}
+{"timestamp": "2026-05-22T17:51:34.532112", "agent": "Reviewer", "action": "review_output", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:51:39.697655", "agent": "Tester", "action": "run_tester", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:53:44.315366", "agent": "Manager", "action": "create_handoff", "status": "SUCCESS", "details": "Add execution duration timing logs to execution_controller.py using the existing logger system."}
+{"timestamp": "2026-05-22T17:53:47.757849", "agent": "Coder", "action": "run_coder", "status": "READY", "details": "['app/core/execution_controller.py', 'app/core/config.py', 'app/core/logger.py', 'relay-system/config/settings.json', 'relay-system/handoffs/active_handoff.md']"}
+{"timestamp": "2026-05-22T17:53:49.125662", "agent": "Reviewer", "action": "review_output", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:53:52.296277", "agent": "Tester", "action": "run_tester", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:55:46.465002", "agent": "DirectHandoff", "action": "create_direct_handoff", "status": "SUCCESS", "details": "Add execution duration timing logs to execution_controller.py using the existing logger system."}
+{"timestamp": "2026-05-22T17:55:49.478806", "agent": "Coder", "action": "run_coder", "status": "READY", "details": "['app/core/execution_controller.py', 'app/core/config.py', 'app/core/logger.py', 'relay-system/config/settings.json', 'relay-system/handoffs/active_handoff.md']"}
+{"timestamp": "2026-05-22T17:55:50.584048", "agent": "Reviewer", "action": "review_output", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:55:54.947991", "agent": "Tester", "action": "run_tester", "status": "SUCCESS", "details": ""}
+{"timestamp": "2026-05-22T17:55:55.989859", "agent": "ExecutionController", "action": "execute_start", "status": "RUNNING", "details": "test_task"}
+{"timestamp": "2026-05-22T17:55:56.090070", "agent": "ExecutionController", "action": "execute_success", "status": "SUCCESS", "details": "test_task - Duration: 0.10s"}

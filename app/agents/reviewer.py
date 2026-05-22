@@ -23,6 +23,11 @@ def review_output(handoff: str, coder_output: str) -> str:
         log_event("Reviewer", "review_output", "NEEDS_REVISION")
         return verdict
 
+    if "--- FILE:" not in coder_output or "--- END FILE ---" not in coder_output:
+        verdict = "NEEDS_REVISION\nCoder output does not include required FILE blocks for patch application."
+        log_event("Reviewer", "review_output", "NEEDS_REVISION")
+        return verdict
+
     prompt = f"""
 You are the Reviewer agent.
 

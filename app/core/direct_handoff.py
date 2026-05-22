@@ -1,5 +1,10 @@
-# Task
-Add execution duration timing logs to execution_controller.py using the existing logger system.
+from app.core.handoff_file import write_handoff
+from app.core.logger import log_event
+
+
+def create_direct_handoff(user_task: str) -> str:
+    handoff = f"""# Task
+{user_task}
 
 # Constraints
 - Use repository context only
@@ -19,3 +24,15 @@ Add execution duration timing logs to execution_controller.py using the existing
 # Notes
 - This handoff was created directly from the user task without Manager expansion
 - Coder must rely on repository context, not assumptions
+"""
+
+    write_handoff(handoff)
+
+    log_event(
+        agent="DirectHandoff",
+        action="create_direct_handoff",
+        status="SUCCESS",
+        details=user_task
+    )
+
+    return handoff

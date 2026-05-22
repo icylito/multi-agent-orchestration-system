@@ -1,4 +1,5 @@
 from app.agents.manager import create_handoff
+from app.core.direct_handoff import create_direct_handoff
 from app.agents.coder import run_coder
 from app.agents.reviewer import review_output
 from app.agents.tester import run_tester
@@ -29,10 +30,18 @@ def main():
     state["task"] = user_task
     save_state(state)
 
-    print("\n[Manager] Creating handoff...\n")
-    handoff = create_handoff(user_task)
+    use_manager = input("Use Manager? (y/n): ").strip().lower()
+
+    if use_manager == "y":
+        print("\n[Manager] Creating handoff...\n")
+        handoff = create_handoff(user_task)
+        state["status"] = "MANAGER_HANDOFF_CREATED"
+    else:
+        print("\n[DirectHandoff] Creating direct handoff...\n")
+        handoff = create_direct_handoff(user_task)
+        state["status"] = "DIRECT_HANDOFF_CREATED"
+
     state["handoff"] = handoff
-    state["status"] = "HANDOFF_CREATED"
     save_state(state)
     print(handoff)
 

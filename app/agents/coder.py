@@ -77,9 +77,17 @@ Summary:
 Write a concrete summary of what you will change.
 
 Proposed Changes:
-Provide the full updated file content for every modified file.
+Provide full updated file content using this exact format:
 
-If you cannot provide full updated file content, respond BLOCKED and explain why.
+--- FILE: path/to/file.py ---
+full file content here
+--- END FILE ---
+
+Rules:
+- Do not use markdown code fences.
+- Do not use ```python blocks.
+- Do not describe changes instead of giving file blocks.
+- If you cannot provide full updated file content in FILE blocks, respond BLOCKED and explain why.
 """
 
     response = generate(prompt, model=MODEL)

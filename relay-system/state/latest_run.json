@@ -1,0 +1,40 @@
+{
+  "status": "TEST_EXECUTED",
+  "task": "Add execution duration timing logs to execution_controller.py using the existing logger system.",
+  "handoff": "# Task\nAdd execution duration timing logs to execution_controller.py using the existing logger system.\n\n# Constraints\n- Use repository context only\n- Modify only files that already exist unless explicitly requested\n- Do not redesign architecture\n- Do not invent methods/classes/files\n- Keep changes minimal and focused\n- Provide full updated file content using FILE blocks\n- If blocked, say BLOCKED clearly\n\n# Expected Output\n- Concrete grounded implementation\n- Minimal patchable FILE blocks\n- No placeholder output\n- No markdown code fences\n\n# Notes\n- This handoff was created directly from the user task without Manager expansion\n- Coder must rely on repository context, not assumptions\n",
+  "coder_packet": {
+    "agent": "Coder",
+    "status": "READY",
+    "summary": "Coder execution completed",
+    "relevant_files": [
+      "app/core/execution_controller.py",
+      "app/core/config.py",
+      "app/core/logger.py",
+      "relay-system/config/settings.json",
+      "relay-system/handoffs/active_handoff.md"
+    ],
+    "proposed_changes": "Status: READY\n\nSummary:\nI'll add execution duration timing logs to the execution_controller.py file using the existing logger system. The changes will track how long each execution takes and log that information along with the existing execution events.\n\nProposed Changes:\n\n--- FILE: app/core/execution_controller.py ---\nfrom app.core.logger import log_event\nfrom app.core.config import get_config_value\nfrom datetime import datetime\n\n\nclass ExecutionController:\n    def __init__(self):\n        self.status = \"idle\"\n        self.retry_limit = get_config_value(\"execution.retry_limit\", 0)\n\n    def execute(self, task_name: str, handler):\n        self.status = \"running\"\n        log_event(\"ExecutionController\", \"execute_start\", \"RUNNING\", task_name)\n        \n        start_time = datetime.utcnow()\n\n        retry_count = 0\n        while True:\n            try:\n                result = handler()\n                end_time = datetime.utcnow()\n                duration = (end_time - start_time).total_seconds()\n                self.status = \"success\"\n                log_event(\"ExecutionController\", \"execute_success\", \"SUCCESS\", f\"{task_name} - Duration: {duration:.2f}s\")\n                return result\n            except Exception as error:\n                retry_count += 1\n                if retry_count <= self.retry_limit:\n                    log_event(\"ExecutionController\", \"execute_retry\", \"RETRY\", f\"Attempt {retry_count}: {str(error)}\")\n                    continue\n                else:\n                    end_time = datetime.utcnow()\n                    duration = (end_time - start_time).total_seconds()\n                    self.status = \"failed\"\n                    log_event(\"ExecutionController\", \"execute_failed\", \"FAILED\", f\"{str(error)} - Duration: {duration:.2f}s\")\n                    raise\n--- END FILE ---",
+    "errors": null
+  },
+  "review": "PASS\n\nThe coder has provided a concrete, grounded implementation that modifies the existing `execution_controller.py` file as requested. The changes are minimal and focused, adding execution duration timing logs using the existing logger system. The code properly tracks start and end times, calculates duration, and logs this information along with existing execution events. No placeholder output, generic code, or invented components are present. The implementation adheres to the repository context and existing patterns.",
+  "patch_results": [
+    {
+      "status": "SUCCESS",
+      "message": "Patched app/core/execution_controller.py",
+      "backup": "app/core/execution_controller.py.bak",
+      "file": "app/core/execution_controller.py"
+    }
+  ],
+  "patched_files": [
+    "app/core/execution_controller.py"
+  ],
+  "test_plan": "Status: READY\n\nTest Goal: Verify that execution duration timing logs are properly added to execution_controller.py using the existing logger system.\n\nMinimal Test Command: python -c \"from app.core.execution_controller import ExecutionController; import time; controller = ExecutionController(); controller.execute('test_task', lambda: time.sleep(0.1)); print('Execution completed successfully')\"\n\nExpected Result: The test should complete successfully, showing that the execution_controller.py file properly logs execution duration timing using the existing logger system. The logs should include start time, end time, and calculated duration in seconds for each execution attempt.",
+  "test_result": {
+    "status": "SUCCESS",
+    "stdout": "Execution completed successfully",
+    "stderr": "",
+    "returncode": "0"
+  },
+  "rollback_results": null,
+  "updated_at": "2026-05-22T17:55:56.094508"
+}

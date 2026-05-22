@@ -13,6 +13,15 @@ def execute_patch(coder_output: str):
             patch["content"]
         )
 
+        result["file"] = patch["file"]
         results.append(result)
 
     return results
+
+
+def get_successfully_patched_files(patch_results):
+    return [
+        result["file"]
+        for result in patch_results
+        if result.get("status") == "SUCCESS" and "file" in result
+    ]

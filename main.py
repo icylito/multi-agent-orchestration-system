@@ -3,7 +3,7 @@ from app.agents.coder import run_coder
 from app.agents.reviewer import review_output
 from app.agents.tester import run_tester
 from app.core.handoff_file import read_handoff
-from app.core.execute_patch import execute_patch
+from app.core.execute_patch import execute_patch, get_successfully_patched_files
 from app.core.test_executor import execute_test_plan
 from app.core.rollback import rollback_many
 
@@ -31,6 +31,8 @@ def main():
         if apply_choice == "y":
             print("\n[PatchExecutor] Applying patch...\n")
             patch_results = execute_patch(coder_packet.proposed_changes)
+            patched_files = get_successfully_patched_files(patch_results)
+
             for result in patch_results:
                 print(result)
         else:
@@ -49,7 +51,7 @@ def main():
             if test_result.get("status") != "SUCCESS":
                 rollback_choice = input("\nTest failed. Rollback applied patch? (y/n): ").strip().lower()
                 if rollback_choice == "y":
-                    rollback_results = rollback_many(coder_packet.relevant_files)
+                    rollback_results = rollback_many(patched_files)
                     print("\n[Rollback] Results:")
                     for result in rollback_results:
                         print(result)

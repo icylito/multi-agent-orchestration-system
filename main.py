@@ -19,6 +19,7 @@ def main():
     print("=== Orchestra V2 ===")
 
     state = {
+        "run_id": None,
         "status": "STARTED",
         "task": None,
         "handoff": None,

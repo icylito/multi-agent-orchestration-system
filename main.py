@@ -62,6 +62,7 @@ def main():
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
     parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
+    parser.add_argument("--max-tasks", type=int, default=5, help="Maximum queued tasks to run in one run-all session")
     parser.add_argument("--queue-clear", action="store_true", help="Clear all queued tasks")
     parser.add_argument("--yes", action="store_true", help="Confirm destructive actions")
     parser.add_argument("--queue-status", action="store_true", help="Show queue status summary")
@@ -116,7 +117,12 @@ def main():
 
 
     if args.queue_run_all:
+        tasks_run = 0
+
         while True:
+            if tasks_run >= args.max_tasks:
+                print(f"Reached max task limit: {args.max_tasks}")
+                return
             task = get_next_ready_task()
 
             if not task:
@@ -134,10 +140,12 @@ def main():
 
             if state.get("test_result", {}).get("status") == "SUCCESS":
                 print(mark_completed(task["id"], result=state.get("status")))
+                tasks_run += 1
                 continue
 
             if state.get("status") in {"PATCH_SKIPPED", "TEST_SKIPPED"}:
                 print(mark_completed(task["id"], result=state.get("status")))
+                tasks_run += 1
                 continue
 
             print(mark_failed(task["id"], error=state.get("status")))

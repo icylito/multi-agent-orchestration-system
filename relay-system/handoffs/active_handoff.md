@@ -1,5 +1,5 @@
 # Task
-Add a short comment above ExecutionController explaining its purpose.
+Add a short comment above load_queue explaining it loads persisted task queue state.
 
 # Constraints
 - Use repository context only

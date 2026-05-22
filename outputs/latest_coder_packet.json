@@ -1,6 +1,6 @@
 {
   "agent": "Coder",
-  "status": "READY",
+  "status": "BLOCKED",
   "summary": "Coder execution completed",
   "relevant_files": [
     "app/core/execution_controller.py",
@@ -9,6 +9,6 @@
     "relay-system/config/settings.json",
     "relay-system/handoffs/active_handoff.md"
   ],
-  "proposed_changes": "Status: READY\n\nSummary:\nI will add a short comment above the ExecutionController class to explain its purpose. The comment should describe what the controller does in the system.\n\nProposed Changes:\n\n--- FILE: app/core/execution_controller.py ---\nfrom app.core.logger import log_event\nfrom app.core.config import get_config_value\nfrom datetime import datetime\n\n\n# Execution controller responsible for managing task execution with retry logic and logging\nclass ExecutionController:\n    def __init__(self):\n        self.status = \"idle\"\n        self.retry_limit = get_config_value(\"execution.retry_limit\", 0)\n\n    def execute(self, task_name: str, handler):\n        self.status = \"running\"\n        log_event(\"ExecutionController\", \"execute_start\", \"RUNNING\", task_name)\n        \n        start_time = datetime.utcnow()\n\n        retry_count = 0\n        while True:\n            try:\n                result = handler()\n                end_time = datetime.utcnow()\n                duration = (end_time - start_time).total_seconds()\n                self.status = \"success\"\n                log_event(\"ExecutionController\", \"execute_success\", \"SUCCESS\", f\"{task_name} - Duration: {duration:.2f}s\")\n                return result\n            except Exception as error:\n                retry_count += 1\n                if retry_count <= self.retry_limit:\n                    log_event(\"ExecutionController\", \"execute_retry\", \"RETRY\", f\"Attempt {retry_count}: {str(error)}\")\n                    continue\n                else:\n                    end_time = datetime.utcnow()\n                    duration = (end_time - start_time).total_seconds()\n                    self.status = \"failed\"\n                    log_event(\"ExecutionController\", \"execute_failed\", \"FAILED\", f\"{str(error)} - Duration: {duration:.2f}s\")\n                    raise\n--- END FILE ---",
+  "proposed_changes": "Status: BLOCKED\n\nSummary:\nThe task asks to add a comment above a `load_queue` function explaining it loads persisted task queue state. However, there is no `load_queue` function in the provided repository context. The files shown include `execution_controller.py`, `config.py`, `logger.py`, and a configuration file, but none contain a `load_queue` function definition. Without this function, I cannot make the requested modification.\n\nProposed Changes:\nBLOCKED - No `load_queue` function found in the provided repository context to modify.",
   "errors": null
 }

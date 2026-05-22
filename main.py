@@ -3,7 +3,13 @@ import argparse
 from app.core.pipeline import run_pipeline
 from app.core.status_reporter import print_status
 from app.agents.planner import create_plan
-from app.core.task_queue import add_task, list_tasks, get_next_ready_task, mark_completed, mark_failed
+from app.core.task_queue import (
+    add_task,
+    list_tasks,
+    get_next_ready_task,
+    mark_completed,
+    mark_failed,
+)
 
 
 def interactive_mode():
@@ -42,18 +48,25 @@ def main():
     parser.add_argument("--no-manager", action="store_true", help="Skip Manager planning")
     parser.add_argument("--auto-apply", action="store_true", help="Automatically apply patches")
     parser.add_argument("--auto-test", action="store_true", help="Automatically run tests")
+
     parser.add_argument("--status", action="store_true", help="Show latest run status")
-    parser.add_argument("--queue-add", type=str, help="Add a task to the queue")
+    parser.add_argument("--plan", type=str, help="Create a non-executing plan")
+
+    parser.add_argument("--queue-add", type=str, help="Add task to queue")
     parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
-    parser.add_argument("--queue-complete", type=str, help="Mark task completed by ID")
-    parser.add_argument("--queue-fail", type=str, help="Mark task failed by ID")
-    parser.add_argument("--plan", type=str, help="Create a non-executing plan for a larger task")
+    parser.add_argument("--queue-complete", type=str, help="Mark task completed")
+    parser.add_argument("--queue-fail", type=str, help="Mark task failed")
+    parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
 
     args = parser.parse_args()
 
     if args.status:
         print_status()
+        return
+
+    if args.plan:
+        print(create_plan(args.plan))
         return
 
     if args.queue_add:
@@ -78,8 +91,29 @@ def main():
         print(mark_failed(args.queue_fail))
         return
 
-    if args.plan:
-        print(create_plan(args.plan))
+    if args.queue_run_next:
+        task = get_next_ready_task()
+
+        if not task:
+            print("No ready queued task found.")
+            return
+
+        print(f"Running queued task: {task['id']} - {task['title']}")
+
+        state = run_pipeline(
+            user_task=task["title"],
+            use_manager=args.manager and not args.no_manager,
+            auto_apply=args.auto_apply,
+            auto_test=args.auto_test,
+        )
+
+        if state.get("test_result", {}).get("status") == "SUCCESS":
+            print(mark_completed(task["id"], result=state.get("status")))
+        elif state.get("status") in {"PATCH_SKIPPED", "TEST_SKIPPED"}:
+            print(mark_completed(task["id"], result=state.get("status")))
+        else:
+            print(mark_failed(task["id"], error=state.get("status")))
+
         return
 
     if args.task:

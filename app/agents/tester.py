@@ -24,6 +24,10 @@ Rules:
 - Provide a Python command only if the repo is Python.
 - Do not use markdown code fences.
 - Minimal Test Command must be one single-line command.
+- If validating text above a target line, use grep -B.
+- If validating text below a target line, use grep -A.
+- If validating text above a line, use grep -B.
+- If validating text below a line, use grep -A.
 
 Task:
 {task}

@@ -1,5 +1,5 @@
 # Task
-Add a short comment above the ExecutionController class explaining its purpose.
+Add a short comment above ExecutionController explaining its purpose.
 
 # Constraints
 - Use repository context only

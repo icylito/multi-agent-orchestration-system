@@ -16,7 +16,7 @@ from app.core.diff_preview import create_diff_bundle
 MAX_REVIEW_RETRIES = 1
 
 
-def run_pipeline(user_task: str, use_manager: bool = False):
+def run_pipeline(user_task: str, use_manager: bool = False, auto_apply: bool = False, auto_test: bool = False):
     state = {
         "run_id": None,
         "status": "STARTED",
@@ -100,7 +100,7 @@ def run_pipeline(user_task: str, use_manager: bool = False):
     else:
         print("No patchable FILE blocks found.")
 
-    apply_choice = input("\nReviewer passed. Apply proposed patch? (y/n): ").strip().lower()
+    apply_choice = "y" if auto_apply else input("\nReviewer passed. Apply proposed patch? (y/n): ").strip().lower()
 
     if apply_choice == "y":
         print("\n[PatchExecutor] Applying patch...\n")
@@ -126,7 +126,7 @@ def run_pipeline(user_task: str, use_manager: bool = False):
     save_state(state)
     print(test_plan)
 
-    run_choice = input("\nRun tester command? (y/n): ").strip().lower()
+    run_choice = "y" if auto_test else input("\nRun tester command? (y/n): ").strip().lower()
 
     if run_choice == "y":
         print("\n[TestExecutor] Running test...\n")

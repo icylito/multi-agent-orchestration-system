@@ -35,10 +35,24 @@ def add_task(
     constraints: Optional[List[str]] = None,
     priority: str = "normal",
     execution_mode: str = "direct",
+    notes: str = "",
+    tags: Optional[List[str]] = None,
+    created_by: str = "human",
 ) -> Dict:
     queue = load_queue()
     dependencies = dependencies or []
     constraints = constraints or []
+    tags = tags or []
+
+    # Auto-infer basic structure if not provided
+    if priority not in {"low", "normal", "high"}:
+        priority = "normal"
+
+    if execution_mode not in {"direct", "manager"}:
+        execution_mode = "direct"
+
+    if not notes:
+        notes = f"Auto-generated task: {title}"
 
     invalid_dependencies = [
         dep for dep in dependencies
@@ -60,6 +74,9 @@ def add_task(
         "constraints": constraints,
         "priority": priority,
         "execution_mode": execution_mode,
+        "notes": notes,
+        "tags": tags,
+        "created_by": created_by,
         "status": "pending",
         "dependencies": dependencies,
         "created_at": _now(),
@@ -202,7 +219,7 @@ def validate_queue_data(queue_data):
         if not isinstance(task, dict):
             return False, "Each task must be a dictionary"
 
-        required = ["id", "title", "goal", "constraints", "priority", "execution_mode", "status", "dependencies", "result", "error"]
+        required = ["id", "title", "goal", "constraints", "priority", "execution_mode", "notes", "tags", "created_by", "status", "dependencies", "result", "error"]
 
         for key in required:
             if key not in task:

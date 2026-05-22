@@ -2,15 +2,18 @@
   "tasks": [
     {
       "id": "task-1",
-      "title": "Skip test task",
-      "goal": "Skip test task",
+      "title": "Test auto structure task",
+      "goal": "Test auto structure task",
       "constraints": [],
       "priority": "normal",
       "execution_mode": "direct",
-      "status": "skipped",
+      "notes": "Auto-generated task: Test auto structure task",
+      "tags": [],
+      "created_by": "human",
+      "status": "pending",
       "dependencies": [],
-      "created_at": "2026-05-22T19:02:50.143757",
-      "updated_at": "2026-05-22T19:02:50.201151",
+      "created_at": "2026-05-22T19:09:06.777345",
+      "updated_at": "2026-05-22T19:09:06.777357",
       "result": null,
       "error": null
     }

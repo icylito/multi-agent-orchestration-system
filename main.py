@@ -68,6 +68,9 @@ def main():
     parser.add_argument("--priority", type=str, default="normal", help="Task priority")
     parser.add_argument("--execution-mode", type=str, default="direct", help="Task execution mode")
     parser.add_argument("--constraint", action="append", default=[], help="Task constraint; can be used multiple times")
+    parser.add_argument("--note", type=str, default="", help="Task note")
+    parser.add_argument("--tag", action="append", default=[], help="Task tag; can be used multiple times")
+    parser.add_argument("--created-by", type=str, default="human", help="Task creator")
     parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
     parser.add_argument("--queue-table", action="store_true", help="Show queue as table")
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
@@ -145,7 +148,15 @@ def main():
         if args.depends_on:
             dependencies = [dep.strip() for dep in args.depends_on.split(",") if dep.strip()]
 
-        task = add_task(args.queue_add, dependencies=dependencies)
+        task = add_task(
+    title=args.queue_add,
+    dependencies=dependencies,
+    notes=args.note,
+    tags=args.tag,
+    created_by=args.created_by,
+    priority=args.priority,
+    execution_mode=args.execution_mode,
+)
         print(format_task_result(task, action='add'))
         return
 

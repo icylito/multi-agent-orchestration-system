@@ -10,9 +10,19 @@ from app.core.diff_preview import create_diff_bundle
 from app.core.test_executor import execute_test_plan
 from app.core.rollback import rollback_many
 from app.core.state_manager import save_state
+from app.agents.memory_gatekeeper import run_memory_gatekeeper
 
 
 MAX_REVIEW_RETRIES = 1
+
+
+def finalize_memory(state):
+    print("\n[MemoryGatekeeper] Saving run summary...\n")
+    summary = run_memory_gatekeeper(state)
+    state["memory_summary"] = summary
+    save_state(state)
+    print(summary)
+
 
 
 def main():
@@ -86,12 +96,14 @@ def main():
         print("\n[Tester] Skipped because reviewer did not PASS.")
         state["status"] = "REVIEW_NOT_PASS"
         save_state(state)
+        finalize_memory(state)
         return
 
     if not review.strip().startswith("PASS"):
         print("\n[Tester] Skipped because reviewer did not PASS.")
         state["status"] = "REVIEW_NOT_PASS"
         save_state(state)
+        finalize_memory(state)
         return
 
     patches = extract_file_blocks(coder_packet.proposed_changes)
@@ -151,6 +163,8 @@ def main():
     else:
         state["status"] = "TEST_SKIPPED"
         save_state(state)
+
+    finalize_memory(state)
 
 
 if __name__ == "__main__":

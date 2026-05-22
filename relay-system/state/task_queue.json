@@ -2,49 +2,23 @@
   "tasks": [
     {
       "id": "task-1",
-      "title": "Create basic task queue data structure with status fields",
+      "title": "Smoke parent task",
       "status": "pending",
       "dependencies": [],
+      "created_at": "2026-05-22T18:49:12.321763",
+      "updated_at": "2026-05-22T18:49:12.321777",
       "result": null,
       "error": null
     },
     {
       "id": "task-2",
-      "title": "Implement queue push functionality with dependency tracking",
+      "title": "Smoke child task",
       "status": "pending",
       "dependencies": [
         "task-1"
       ],
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-3",
-      "title": "Add dependency validation logic for queued tasks",
-      "status": "pending",
-      "dependencies": [
-        "task-2"
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-4",
-      "title": "Implement status reporting for queued tasks",
-      "status": "pending",
-      "dependencies": [
-        "task-3"
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-5",
-      "title": "Create queue processing loop with status updates",
-      "status": "pending",
-      "dependencies": [
-        "task-4"
-      ],
+      "created_at": "2026-05-22T18:49:12.387296",
+      "updated_at": "2026-05-22T18:49:12.387311",
       "result": null,
       "error": null
     }

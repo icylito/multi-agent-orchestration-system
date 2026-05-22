@@ -15,7 +15,6 @@ from app.core.task_queue import (
     export_queue,
     import_queue,
     validate_queue_data,
-    export_queue,
 )
 
 

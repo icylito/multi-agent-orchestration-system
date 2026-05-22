@@ -1,5 +1,5 @@
 # Task
-Create basic task queue data structure with status fields
+Clean up main.py duplicate imports and add a simple smoke test command for CLI status, queue add, queue list, and queue validate.
 
 # Constraints
 - Use repository context only

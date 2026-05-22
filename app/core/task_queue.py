@@ -32,6 +32,17 @@ def add_task(title: str, dependencies: Optional[List[str]] = None) -> Dict:
     queue = load_queue()
     dependencies = dependencies or []
 
+    invalid_dependencies = [
+        dep for dep in dependencies
+        if not task_exists(dep)
+    ]
+
+    if invalid_dependencies:
+        return {
+            "status": "ERROR",
+            "message": f"Invalid dependencies: {invalid_dependencies}"
+        }
+
     task_id = f"task-{len(queue['tasks']) + 1}"
 
     task = {
@@ -60,6 +71,12 @@ def get_task(task_id: str) -> Optional[Dict]:
         if task["id"] == task_id:
             return task
     return None
+
+
+
+
+def task_exists(task_id: str) -> bool:
+    return get_task(task_id) is not None
 
 
 def _dependency_completed(queue: Dict, dependency_id: str) -> bool:

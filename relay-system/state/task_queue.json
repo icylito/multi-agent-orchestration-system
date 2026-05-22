@@ -1,0 +1,14 @@
+{
+  "tasks": [
+    {
+      "id": "task-1",
+      "title": "Add task queue MVP",
+      "status": "completed",
+      "dependencies": [],
+      "created_at": "2026-05-22T18:23:44.420311",
+      "updated_at": "2026-05-22T18:23:44.598070",
+      "result": null,
+      "error": null
+    }
+  ]
+}

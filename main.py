@@ -3,6 +3,7 @@ import argparse
 from app.core.pipeline import run_pipeline
 from app.core.status_reporter import print_status
 from app.agents.planner import create_plan
+from app.core.task_queue import add_task, list_tasks, get_next_ready_task, mark_completed, mark_failed
 
 
 def interactive_mode():
@@ -42,12 +43,39 @@ def main():
     parser.add_argument("--auto-apply", action="store_true", help="Automatically apply patches")
     parser.add_argument("--auto-test", action="store_true", help="Automatically run tests")
     parser.add_argument("--status", action="store_true", help="Show latest run status")
+    parser.add_argument("--queue-add", type=str, help="Add a task to the queue")
+    parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
+    parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
+    parser.add_argument("--queue-complete", type=str, help="Mark task completed by ID")
+    parser.add_argument("--queue-fail", type=str, help="Mark task failed by ID")
     parser.add_argument("--plan", type=str, help="Create a non-executing plan for a larger task")
 
     args = parser.parse_args()
 
     if args.status:
         print_status()
+        return
+
+    if args.queue_add:
+        task = add_task(args.queue_add)
+        print(task)
+        return
+
+    if args.queue_list:
+        for task in list_tasks():
+            print(task)
+        return
+
+    if args.queue_next:
+        print(get_next_ready_task())
+        return
+
+    if args.queue_complete:
+        print(mark_completed(args.queue_complete))
+        return
+
+    if args.queue_fail:
+        print(mark_failed(args.queue_fail))
         return
 
     if args.plan:

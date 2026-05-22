@@ -30,7 +30,7 @@ def main():
     state["task"] = user_task
     save_state(state)
 
-    use_manager = input("Use Manager? (y/n): ").strip().lower()
+    use_manager = input("Use Manager for planning? Default is no. (y/n): ").strip().lower()
 
     if use_manager == "y":
         print("\n[Manager] Creating handoff...\n")

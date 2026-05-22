@@ -3,6 +3,7 @@ from app.core.config import get_config_value
 from datetime import datetime
 
 
+# Execution controller responsible for managing task execution with retry logic and logging
 class ExecutionController:
     def __init__(self):
         self.status = "idle"

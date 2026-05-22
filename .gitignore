@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+
+outputs/
+relay-system/logs/
+relay-system/state/latest_run.json
+relay-system/state/runs/
+
+memory/working/latest_summary.md
+
+*.bak

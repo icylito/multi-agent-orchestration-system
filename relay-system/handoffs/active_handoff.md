@@ -1,7 +1,11 @@
 # Task
-Clean up main.py duplicate imports and add a simple smoke test command for CLI status, queue add, queue list, and queue validate.
+Structured execution test
+
+# Priority
+normal
 
 # Constraints
+
 - Use repository context only
 - Modify only files that already exist unless explicitly requested
 - Do not redesign architecture

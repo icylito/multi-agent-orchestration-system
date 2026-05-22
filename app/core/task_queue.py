@@ -28,9 +28,17 @@ def save_queue(queue: Dict) -> None:
     QUEUE_PATH.write_text(json.dumps(queue, indent=2), encoding="utf-8")
 
 
-def add_task(title: str, dependencies: Optional[List[str]] = None) -> Dict:
+def add_task(
+    title: str,
+    dependencies: Optional[List[str]] = None,
+    goal: Optional[str] = None,
+    constraints: Optional[List[str]] = None,
+    priority: str = "normal",
+    execution_mode: str = "direct",
+) -> Dict:
     queue = load_queue()
     dependencies = dependencies or []
+    constraints = constraints or []
 
     invalid_dependencies = [
         dep for dep in dependencies
@@ -48,6 +56,10 @@ def add_task(title: str, dependencies: Optional[List[str]] = None) -> Dict:
     task = {
         "id": task_id,
         "title": title,
+        "goal": goal or title,
+        "constraints": constraints,
+        "priority": priority,
+        "execution_mode": execution_mode,
         "status": "pending",
         "dependencies": dependencies,
         "created_at": _now(),
@@ -190,7 +202,7 @@ def validate_queue_data(queue_data):
         if not isinstance(task, dict):
             return False, "Each task must be a dictionary"
 
-        required = ["id", "title", "status", "dependencies", "result", "error"]
+        required = ["id", "title", "goal", "constraints", "priority", "execution_mode", "status", "dependencies", "result", "error"]
 
         for key in required:
             if key not in task:

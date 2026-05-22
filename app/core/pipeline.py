@@ -16,11 +16,22 @@ from app.core.diff_preview import create_diff_bundle
 MAX_REVIEW_RETRIES = 1
 
 
-def run_pipeline(user_task: str, use_manager: bool = False, auto_apply: bool = False, auto_test: bool = False):
+def run_pipeline(
+    user_task: str,
+    use_manager: bool = False,
+    auto_apply: bool = False,
+    auto_test: bool = False,
+    constraints=None,
+    priority="normal",
+):
+    constraints = constraints or []
+
     state = {
         "run_id": None,
         "status": "STARTED",
         "task": user_task,
+        "constraints": constraints,
+        "priority": priority,
         "handoff": None,
         "coder_packet": None,
         "review": None,
@@ -41,7 +52,11 @@ def run_pipeline(user_task: str, use_manager: bool = False, auto_apply: bool = F
         state["status"] = "MANAGER_HANDOFF_CREATED"
     else:
         print("\n[DirectHandoff] Creating direct handoff...\n")
-        handoff = create_direct_handoff(user_task)
+        handoff = create_direct_handoff(
+            user_task=user_task,
+            constraints=constraints,
+            priority=priority,
+        )
         state["status"] = "DIRECT_HANDOFF_CREATED"
 
     state["handoff"] = handoff

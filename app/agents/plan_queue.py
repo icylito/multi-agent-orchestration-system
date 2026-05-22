@@ -29,6 +29,10 @@ Rules:
     {{
       "id": "task-1",
       "title": "Small concrete task",
+      "goal": "Specific outcome this task should achieve",
+      "constraints": ["Keep changes minimal", "Use existing files when possible"],
+      "priority": "normal",
+      "execution_mode": "direct",
       "status": "pending",
       "dependencies": [],
       "result": null,

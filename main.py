@@ -61,6 +61,9 @@ def main():
 
     parser.add_argument("--queue-add", type=str, help="Add task to queue")
     parser.add_argument("--depends-on", type=str, help="Comma-separated dependency task IDs")
+    parser.add_argument("--priority", type=str, default="normal", help="Task priority")
+    parser.add_argument("--execution-mode", type=str, default="direct", help="Task execution mode")
+    parser.add_argument("--constraint", action="append", default=[], help="Task constraint; can be used multiple times")
     parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
@@ -182,10 +185,12 @@ def main():
             print(f"Running queued task: {task['id']} - {task['title']}")
 
             state = run_pipeline(
-                user_task=task["title"],
-                use_manager=args.manager and not args.no_manager,
+                user_task=task["goal"],
+                use_manager=(task.get("execution_mode") == "manager") or (args.manager and not args.no_manager),
                 auto_apply=args.auto_apply,
                 auto_test=args.auto_test,
+                constraints=task.get("constraints", []),
+                priority=task.get("priority", "normal"),
             )
 
             if state.get("test_result", {}).get("status") == "SUCCESS":
@@ -213,7 +218,7 @@ def main():
 
         state = run_pipeline(
             user_task=task["title"],
-            use_manager=args.manager and not args.no_manager,
+            use_manager=(task.get("execution_mode") == "manager") or (args.manager and not args.no_manager),
             auto_apply=args.auto_apply,
             auto_test=args.auto_test,
         )

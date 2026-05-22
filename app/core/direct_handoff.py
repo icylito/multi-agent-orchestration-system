@@ -2,11 +2,25 @@ from app.core.handoff_file import write_handoff
 from app.core.logger import log_event
 
 
-def create_direct_handoff(user_task: str) -> str:
+def create_direct_handoff(
+    user_task: str,
+    constraints=None,
+    priority="normal",
+) -> str:
+    constraints = constraints or []
+
+    constraint_text = "\n".join(
+        f"- {constraint}" for constraint in constraints
+    )
+
     handoff = f"""# Task
 {user_task}
 
+# Priority
+{priority}
+
 # Constraints
+{constraint_text}
 - Use repository context only
 - Modify only files that already exist unless explicitly requested
 - Do not redesign architecture

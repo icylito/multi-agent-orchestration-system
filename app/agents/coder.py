@@ -7,6 +7,7 @@ from app.core.repository_context import (
     prepare_context_bundle,
 )
 from app.core.execution_packet import ExecutionPacket
+from pathlib import Path
 
 MODEL = "qwen3-coder:30b"
 
@@ -95,6 +96,9 @@ If you cannot provide full updated file content, respond BLOCKED and explain why
         relevant_files=relevant_files,
         proposed_changes=response,
     )
+
+    Path("outputs").mkdir(exist_ok=True)
+    Path("outputs/latest_coder_packet.json").write_text(packet.to_json(), encoding="utf-8")
 
     log_event(
         "Coder",

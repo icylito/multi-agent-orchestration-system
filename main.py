@@ -3,6 +3,7 @@ from app.agents.coder import run_coder
 from app.agents.reviewer import review_output
 from app.agents.tester import run_tester
 from app.core.handoff_file import read_handoff
+from app.core.execute_patch import execute_patch
 
 
 def main():
@@ -23,6 +24,16 @@ def main():
     print(review)
 
     if review.strip().startswith("PASS"):
+        apply_choice = input("\nReviewer passed. Apply proposed patch? (y/n): ").strip().lower()
+
+        if apply_choice == "y":
+            print("\n[PatchExecutor] Applying patch...\n")
+            patch_results = execute_patch(coder_packet.proposed_changes)
+            for result in patch_results:
+                print(result)
+        else:
+            print("\n[PatchExecutor] Skipped by user.")
+
         print("\n[Tester] Creating validation test...\n")
         test_plan = run_tester(user_task, review, coder_packet.relevant_files)
         print(test_plan)

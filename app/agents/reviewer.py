@@ -1,5 +1,6 @@
 from app.models.ollama_client import generate
 from app.core.logger import log_event
+from pathlib import Path
 
 MODEL = "qwen3-coder:30b"
 
@@ -49,5 +50,9 @@ Then explain briefly why.
 """
 
     response = generate(prompt, model=MODEL)
+
+    Path("outputs").mkdir(exist_ok=True)
+    Path("outputs/latest_review.txt").write_text(response, encoding="utf-8")
+
     log_event("Reviewer", "review_output", "SUCCESS")
     return response

@@ -40,7 +40,7 @@ def _format_context(bundle):
     return "\n".join(parts)
 
 
-def run_coder():
+def run_coder(feedback: str = ''):
     handoff = read_handoff()
 
     files = scan_repository(".")
@@ -63,6 +63,9 @@ Rules:
 
 Handoff:
 {handoff}
+
+Reviewer Feedback:
+{feedback if feedback else 'NO_FEEDBACK'}
 
 Repository Context:
 {context}

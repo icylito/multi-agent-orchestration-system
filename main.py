@@ -58,6 +58,7 @@ def main():
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
+    parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
 
     args = parser.parse_args()
 
@@ -90,6 +91,36 @@ def main():
     if args.queue_fail:
         print(mark_failed(args.queue_fail))
         return
+
+
+    if args.queue_run_all:
+        while True:
+            task = get_next_ready_task()
+
+            if not task:
+                print("No more ready queued tasks.")
+                return
+
+            print(f"Running queued task: {task['id']} - {task['title']}")
+
+            state = run_pipeline(
+                user_task=task["title"],
+                use_manager=args.manager and not args.no_manager,
+                auto_apply=args.auto_apply,
+                auto_test=args.auto_test,
+            )
+
+            if state.get("test_result", {}).get("status") == "SUCCESS":
+                print(mark_completed(task["id"], result=state.get("status")))
+                continue
+
+            if state.get("status") in {"PATCH_SKIPPED", "TEST_SKIPPED"}:
+                print(mark_completed(task["id"], result=state.get("status")))
+                continue
+
+            print(mark_failed(task["id"], error=state.get("status")))
+            print("Stopping queue execution because a task failed.")
+            return
 
     if args.queue_run_next:
         task = get_next_ready_task()

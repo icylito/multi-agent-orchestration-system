@@ -9,6 +9,6 @@
     "relay-system/config/settings.json",
     "relay-system/handoffs/active_handoff.md"
   ],
-  "proposed_changes": "Status: BLOCKED\n\nSummary:\nThe task asks to add a comment above a `load_queue` function explaining it loads persisted task queue state. However, there is no `load_queue` function in the provided repository context. The files shown contain `ExecutionController`, `config`, and `logger` components, but no queue loading functionality is present. Without the `load_queue` function, I cannot make the requested change.\n\nProposed Changes:\nBLOCKED - No `load_queue` function found in the repository context. The provided files do not contain any queue loading functionality that would need a comment added above it.",
+  "proposed_changes": "Status: BLOCKED\n\nSummary:\nThe task asks to add a comment above a `load_queue` function explaining it loads persisted task queue state. However, there is no `load_queue` function in the provided repository context. The files shown contain `ExecutionController`, `config`, and `logger` components, but no queue loading functionality is present. Without the `load_queue` function to modify, this task cannot be completed.\n\nProposed Changes:\nBLOCKED - No `load_queue` function found in the provided repository context. The task cannot be executed as requested because the target function does not exist in the given files.",
   "errors": null
 }

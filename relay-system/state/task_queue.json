@@ -2,51 +2,23 @@
   "tasks": [
     {
       "id": "task-1",
-      "title": "Add task queue MVP",
+      "title": "Parent task example",
       "status": "completed",
       "dependencies": [],
-      "created_at": "2026-05-22T18:23:44.420311",
-      "updated_at": "2026-05-22T18:23:44.598070",
+      "created_at": "2026-05-22T18:32:55.537160",
+      "updated_at": "2026-05-22T18:32:55.772107",
       "result": null,
       "error": null
     },
     {
       "id": "task-2",
-      "title": "Add a short comment above load_queue explaining it loads persisted task queue state.",
+      "title": "Child task example",
       "status": "pending",
-      "dependencies": [],
-      "created_at": "2026-05-22T18:25:22.728629",
-      "updated_at": "2026-05-22T18:25:22.728645",
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-3",
-      "title": "Add a short comment above load_queue explaining it loads persisted task queue state.",
-      "status": "pending",
-      "dependencies": [],
-      "created_at": "2026-05-22T18:26:05.586817",
-      "updated_at": "2026-05-22T18:26:05.586832",
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-4",
-      "title": "Add a short comment above save_queue explaining it persists task queue state.",
-      "status": "pending",
-      "dependencies": [],
-      "created_at": "2026-05-22T18:27:06.632970",
-      "updated_at": "2026-05-22T18:27:06.632985",
-      "result": null,
-      "error": null
-    },
-    {
-      "id": "task-5",
-      "title": "Add a short comment above get_next_ready_task explaining it returns the first pending task with completed dependencies.",
-      "status": "pending",
-      "dependencies": [],
-      "created_at": "2026-05-22T18:27:06.693572",
-      "updated_at": "2026-05-22T18:27:06.693585",
+      "dependencies": [
+        "task-1"
+      ],
+      "created_at": "2026-05-22T18:32:55.593179",
+      "updated_at": "2026-05-22T18:32:55.593193",
       "result": null,
       "error": null
     }

@@ -9,6 +9,7 @@ from app.core.task_queue import (
     get_next_ready_task,
     mark_completed,
     mark_failed,
+    clear_queue,
 )
 
 
@@ -53,12 +54,14 @@ def main():
     parser.add_argument("--plan", type=str, help="Create a non-executing plan")
 
     parser.add_argument("--queue-add", type=str, help="Add task to queue")
+    parser.add_argument("--depends-on", type=str, help="Comma-separated dependency task IDs")
     parser.add_argument("--queue-list", action="store_true", help="List queued tasks")
     parser.add_argument("--queue-next", action="store_true", help="Show next ready task")
     parser.add_argument("--queue-complete", type=str, help="Mark task completed")
     parser.add_argument("--queue-fail", type=str, help="Mark task failed")
     parser.add_argument("--queue-run-next", action="store_true", help="Run next ready queued task")
     parser.add_argument("--queue-run-all", action="store_true", help="Run all ready queued tasks sequentially")
+    parser.add_argument("--queue-clear", action="store_true", help="Clear all queued tasks")
 
     args = parser.parse_args()
 
@@ -70,8 +73,16 @@ def main():
         print(create_plan(args.plan))
         return
 
+    if args.queue_clear:
+        print(clear_queue())
+        return
+
     if args.queue_add:
-        task = add_task(args.queue_add)
+        dependencies = []
+        if args.depends_on:
+            dependencies = [dep.strip() for dep in args.depends_on.split(",") if dep.strip()]
+
+        task = add_task(args.queue_add, dependencies=dependencies)
         print(task)
         return
 

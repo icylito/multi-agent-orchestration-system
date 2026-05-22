@@ -105,3 +105,9 @@ def mark_completed(task_id: str, result=None):
 
 def mark_failed(task_id: str, error=None):
     return update_task_status(task_id, "failed", error=error)
+
+
+def clear_queue():
+    queue = _empty_queue()
+    save_queue(queue)
+    return queue

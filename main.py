@@ -12,6 +12,7 @@ from app.core.task_queue import (
     clear_queue,
     queue_status,
     export_queue,
+    import_queue,
 )
 
 
@@ -68,6 +69,7 @@ def main():
     parser.add_argument("--yes", action="store_true", help="Confirm destructive actions")
     parser.add_argument("--queue-status", action="store_true", help="Show queue status summary")
     parser.add_argument("--queue-export", action="store_true", help="Print full queue JSON")
+    parser.add_argument("--queue-import", type=str, help="Import queue from JSON file")
 
     args = parser.parse_args()
 
@@ -94,6 +96,20 @@ def main():
     if args.queue_export:
         import json
         print(json.dumps(export_queue(), indent=2))
+        return
+
+    if args.queue_import:
+        import json
+        from pathlib import Path
+
+        path = Path(args.queue_import)
+
+        if not path.exists():
+            print({"status": "ERROR", "message": f"File not found: {args.queue_import}"})
+            return
+
+        queue_data = json.loads(path.read_text(encoding="utf-8"))
+        print(import_queue(queue_data))
         return
 
     if args.queue_add:

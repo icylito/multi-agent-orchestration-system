@@ -156,3 +156,24 @@ def queue_status():
 
 def export_queue():
     return load_queue()
+
+
+def import_queue(queue_data):
+    if not isinstance(queue_data, dict):
+        return {
+            "status": "ERROR",
+            "message": "Queue data must be a dictionary"
+        }
+
+    if "tasks" not in queue_data or not isinstance(queue_data["tasks"], list):
+        return {
+            "status": "ERROR",
+            "message": "Queue data must contain a tasks list"
+        }
+
+    save_queue(queue_data)
+
+    return {
+        "status": "SUCCESS",
+        "message": f"Imported {len(queue_data['tasks'])} tasks"
+    }

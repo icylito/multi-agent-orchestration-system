@@ -14,17 +14,17 @@ def main():
     handoff = create_handoff(user_task)
     print(handoff)
 
-    print("\n[Coder] Generating implementation...\n")
-    coder_output = run_coder()
-    print(coder_output)
+    print("\n[Coder] Generating implementation packet...\n")
+    coder_packet = run_coder()
+    print(coder_packet.to_json())
 
     print("\n[Reviewer] Validating output...\n")
-    review = review_output(read_handoff(), coder_output)
+    review = review_output(read_handoff(), coder_packet.proposed_changes)
     print(review)
 
     if review.strip().startswith("PASS"):
         print("\n[Tester] Creating validation test...\n")
-        test_plan = run_tester(user_task, review)
+        test_plan = run_tester(user_task, review, coder_packet.relevant_files)
         print(test_plan)
     else:
         print("\n[Tester] Skipped because reviewer did not PASS.")

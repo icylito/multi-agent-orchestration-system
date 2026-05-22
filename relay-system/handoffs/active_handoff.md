@@ -2,22 +2,25 @@
 Implement retry limit support in the execution controller by reading the retry limit value from the existing settings.json configuration file.
 
 # Constraints
-- Only modify the execution controller implementation
-- Read retry limit from settings.json configuration
-- Do not create new configuration files or modify existing ones beyond reading
-- Do not change the existing execution controller architecture
-- Do not implement new retry logic - only add configuration reading
+- Only modify files that already exist in the repository
+- Do not create new configuration files or sections
+- Do not redesign the execution controller architecture
 - Do not add new dependencies or libraries
-- Do not modify any other controllers or system components
+- Only use the existing settings.json structure and parsing mechanism
+- Do not modify any existing controller logic beyond adding retry limit functionality
+- Do not create new classes or methods for retry handling
+- Do not change the existing API or method signatures
 
 # Expected Output
-- Execution controller successfully reads retry limit from settings.json
-- Configuration value is accessible within execution controller logic
-- No existing functionality is broken
-- Minimal code changes to achieve the requirement
+- Execution controller reads retry limit from settings.json
+- Retry limit is applied to execution attempts
+- Configuration key follows existing naming conventions in settings.json
+- Minimal code changes to achieve retry limit functionality
+- No breaking changes to existing functionality
 
 # Notes
-- The settings.json file already exists and contains retry configuration
-- The execution controller should be able to access the retry limit value
-- This is a configuration reading task only - no logic changes required
-- Ensure the implementation follows existing code patterns and conventions
+- The settings.json file already exists and contains configuration parsing logic
+- The execution controller already handles execution flow and errors
+- Retry limit should be configurable and respect existing configuration patterns
+- Implementation should be consistent with existing code style and patterns
+- Do not assume the existence of any retry-related classes or methods beyond what's already in the repository

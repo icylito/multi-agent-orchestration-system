@@ -5,6 +5,7 @@ from app.agents.tester import run_tester
 from app.core.handoff_file import read_handoff
 from app.core.execute_patch import execute_patch
 from app.core.test_executor import execute_test_plan
+from app.core.rollback import rollback_many
 
 
 def main():
@@ -44,6 +45,14 @@ def main():
             print("\n[TestExecutor] Running test...\n")
             test_result = execute_test_plan(test_plan)
             print(test_result)
+
+            if test_result.get("status") != "SUCCESS":
+                rollback_choice = input("\nTest failed. Rollback applied patch? (y/n): ").strip().lower()
+                if rollback_choice == "y":
+                    rollback_results = rollback_many(coder_packet.relevant_files)
+                    print("\n[Rollback] Results:")
+                    for result in rollback_results:
+                        print(result)
     else:
         print("\n[Tester] Skipped because reviewer did not PASS.")
 
